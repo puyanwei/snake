@@ -10,7 +10,7 @@ const Board = ({ rows, cols }) => {
 		paddingTop: `8rem`
 	};
 
-	const createGrid = () => Array.from(Array(rows), () => new Array(cols).fill(<Tile />));
+	const createGrid = () => Array.from(Array(rows), () => new Array(cols).fill(<Tile isActive={false} />));
 
 	return <div style={style}>{createGrid()}</div>;
 };
