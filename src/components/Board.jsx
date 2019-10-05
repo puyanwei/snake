@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Tile from './TIle';
+import Tile from './Tile';
 
 const Board = ({ rows, cols }) => {
     const style = {
@@ -10,9 +10,25 @@ const Board = ({ rows, cols }) => {
         paddingTop: "4rem"
     };
 
-	const createGrid = () => Array.from(Array(rows), () => new Array(cols).fill(<Tile isActive={false} />));
+    const createGrid = () => {
+        let grid = Array.from(Array(rows), () =>
+            new Array(cols))
 
-    return <div style={style}>{createGrid()}</div>;
+        let num = 0;
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid[i].length; j++) {
+                num++
+                grid[i][j] = (<Tile isActive={false} key={num} />)
+            }
+        }
+        return grid;
+    }
+
+    return (
+        <div style={style}>
+            {createGrid()}
+        </div>
+    )
 };
 
 export default Board;
