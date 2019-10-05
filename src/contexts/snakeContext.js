@@ -4,7 +4,9 @@ import { snakeReducer } from '../reducers/snakeReducer';
 export const snakeContext = createContext();
 
 const initialState = {
-    boardState: Array.from(Array(20), () => new Array(15))
+    boardState: Array.from(Array(20), () => new Array(15)),
+    rows: 0,
+    cols: 0
 };
 
 const SnakeContextProvider = ({ children }) => {

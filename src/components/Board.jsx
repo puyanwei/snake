@@ -3,8 +3,8 @@ import React, { useEffect, useContext } from 'react';
 import Tile from './Tile';
 import { snakeContext } from '../contexts/snakeContext';
 
-const Board = ({ rows, cols }) => {
-    const { state: { boardState }, dispatch } = useContext(snakeContext);
+const Board = () => {
+    const { state: { boardState, rows, cols }, dispatch } = useContext(snakeContext);
 
 
     const style = {
