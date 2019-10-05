@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import Tile from './Tile';
+import { snakeContext } from '../contexts/snakeContext';
 
 const Board = ({ rows, cols }) => {
+    const { state: { boardState }, dispatch } = useContext(snakeContext);
+
+
     const style = {
         maxHeight: `${2 * rows}rem`,
         maxWidth: `${2 * cols}rem`,
@@ -10,26 +14,29 @@ const Board = ({ rows, cols }) => {
         paddingTop: "4rem"
     };
 
-    const createGrid = () => {
-        let grid = Array.from(Array(rows), () =>
-            new Array(cols))
+    useEffect(() => {
+        const createGrid = () => {
+            let grid = Array.from(Array(rows), () =>
+                new Array(cols))
 
-        let num = 0;
-        for (let i = 0; i < grid.length; i++) {
-            for (let j = 0; j < grid[i].length; j++) {
-                num++
-                grid[i][j] = <Tile isActive={isMiddleTile(num)} key={num} />
+            let num = 0;
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    num++
+                    grid[i][j] = <Tile isActive={isMiddleTile(num)} key={num} />
+                }
             }
+            dispatch({ type: 'BOARD_STATE', payload: grid });
         }
-        return grid;
-    }
+        createGrid()
+    })
 
     const isMiddleTile = (num) =>
         num === Math.ceil((rows * cols / 2) - (cols / 2))
 
     return (
         <div style={style}>
-            {createGrid()}
+            {boardState}
         </div>
     )
 };
