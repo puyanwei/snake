@@ -18,11 +18,17 @@ const Board = ({ rows, cols }) => {
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[i].length; j++) {
                 num++
-                grid[i][j] = (<Tile isActive={false} key={num} />)
+                grid[i][j] =
+                    num === middleTile() ?
+                        (<Tile isActive={true} key={num} />) :
+                        (<Tile isActive={false} key={num} />)
             }
         }
         return grid;
     }
+
+    const middleTile = () =>
+        Math.ceil((rows * cols / 2) - (cols / 2))
 
     return (
         <div style={style}>
