@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Tile = ({ isActive }) => {
-
 	const style = {
 		height: `2rem`,
 		width: `2rem`,

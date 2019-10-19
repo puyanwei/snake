@@ -1,44 +1,40 @@
 import React, { useEffect, useContext } from 'react';
 
-import Tile from './Tile';
+import Tile from './Tile.jsx';
+import useKeyPress from '../hooks/useKeyPress';
 import { snakeContext } from '../contexts/snakeContext';
 
-const Board = () => {
-    const { state: { boardState, rows, cols }, dispatch } = useContext(snakeContext);
+const Board = ({ rows, cols }) => {
+	const { state: { boardState, position }, dispatch } = useContext(snakeContext);
+	const upArrow = useKeyPress('ArrowUp');
+	const downArrow = useKeyPress('ArrowDown');
+	const rightArrow = useKeyPress('ArrowRight');
+	const leftArrow = useKeyPress('ArrowLeft');
 
+	const style = {
+		maxHeight: `${2 * rows}rem`,
+		maxWidth: `${2 * cols}rem`,
+		margin: '0 auto',
+		paddingTop: '4rem'
+	};
 
-    const style = {
-        maxHeight: `${2 * rows}rem`,
-        maxWidth: `${2 * cols}rem`,
-        margin: "0 auto",
-        paddingTop: "4rem"
-    };
+	let createBoard = () => {
+		let grid = Array.from(Array(rows), () => new Array(cols));
 
-    useEffect(() => {
-        const createGrid = () => {
-            let grid = Array.from(Array(rows), () =>
-                new Array(cols))
+		for (let i = 0; i < grid.length; i++) {
+			for (let j = 0; j < grid[i].length; j++) {
+				grid[i][j] = <Tile isActive={position.x === i && position.y === j} key={`${[ i, j ]}`} />;
+			}
+		}
+		return grid;
+	};
 
-            let num = 0;
-            for (let i = 0; i < grid.length; i++) {
-                for (let j = 0; j < grid[i].length; j++) {
-                    num++
-                    grid[i][j] = <Tile isActive={isMiddleTile(num)} key={num} />
-                }
-            }
-            dispatch({ type: 'BOARD_STATE', payload: grid });
-        }
-        createGrid()
-    })
-
-    const isMiddleTile = (num) =>
-        num === Math.ceil((rows * cols / 2) - (cols / 2))
-
-    return (
-        <div style={style}>
-            {boardState}
-        </div>
-    )
+	return (
+		<div style={style}>
+			{createBoard()}
+			<div>{upArrow && 'hello'}</div>
+		</div>
+	);
 };
 
 export default Board;
