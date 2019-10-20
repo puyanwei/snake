@@ -9,21 +9,29 @@ const Board = ({ rows, cols }) => {
     useEffect(() => {
         const onKeyPress = (e) => {
             switch (e.keyCode) {
-                case 40:
-                    console.log("Its down");
-                    setPosition({ ...position, x: position.x + 1 })
-                    break;
                 case 38:
-                    console.log("Its up");
-                    setPosition({ ...position, x: position.x - 1 })
+                    console.log("up");
+                    if ((position.x - 1) >= 0) {
+                        setPosition({ ...position, x: position.x - 1 })
+                    }
+                    break;
+                case 40:
+                    console.log("down");
+                    if ((position.x + 1) < rows) {
+                        setPosition({ ...position, x: position.x + 1 })
+                    }
                     break;
                 case 37:
-                    console.log("Its left");
-                    setPosition({ ...position, y: position.y - 1 })
+                    console.log("left");
+                    if ((position.y - 1) >= 0) {
+                        setPosition({ ...position, y: position.y - 1 })
+                    }
                     break;
                 case 39:
-                    console.log("Its right");
-                    setPosition({ ...position, y: position.y + 1 })
+                    console.log("right");
+                    if ((position.y + 1) < cols) {
+                        setPosition({ ...position, y: position.y + 1 })
+                    }
                     break;
 
                 default:
@@ -33,7 +41,7 @@ const Board = ({ rows, cols }) => {
         window.addEventListener("keydown", onKeyPress);
         return () => window.removeEventListener("keydown", onKeyPress)
 
-    }, [position])
+    }, [position, cols, rows])
 
     const style = {
         maxHeight: `${2 * rows}rem`,
@@ -41,6 +49,10 @@ const Board = ({ rows, cols }) => {
         margin: '0 auto',
         paddingTop: '4rem'
     };
+
+    const borderCheck = () => {
+
+    }
 
 
     const renderBoard = () => {
