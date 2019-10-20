@@ -1,13 +1,13 @@
 import React from 'react';
 
 const Tile = ({ isActive }) => {
-	const style = {
-		height: `2rem`,
-		width: `2rem`,
-		backgroundColor: `${isActive && 'red'}`
-	};
+    const style = {
+        height: `2rem`,
+        width: `2rem`,
+        backgroundColor: `${isActive ? 'red' : 'buttonface'}`
+    };
 
-	return <button style={style} />;
+    return <button style={style} />;
 };
 
 export default Tile;
