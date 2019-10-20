@@ -24,6 +24,7 @@ const useKeyPress = (targetKey) => {
 		window.addEventListener('keyup', upHandler);
 		// Remove event listeners on cleanup
 		return () => {
+			console.log('removed');
 			window.removeEventListener('keydown', downHandler);
 			window.removeEventListener('keyup', upHandler);
 		};

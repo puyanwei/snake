@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 
 import Tile from './Tile.jsx';
 import useKeyPress from '../hooks/useKeyPress';
-import { snakeContext } from '../contexts/snakeContext';
 
 const Board = ({ rows, cols }) => {
-	const { state: { boardState, position }, dispatch } = useContext(snakeContext);
-	const upArrow = useKeyPress('ArrowUp');
-	const downArrow = useKeyPress('ArrowDown');
-	const rightArrow = useKeyPress('ArrowRight');
-	const leftArrow = useKeyPress('ArrowLeft');
+	const [ position, setPosition ] = useState({ x: 0, y: 0 });
+
+	const arrowUp = useKeyPress('ArrowUp');
+	const arrowDown = useKeyPress('ArrowDown');
+	const arrowRight = useKeyPress('ArrowRight');
+	const arrowLeft = useKeyPress('ArrowLeft');
 
 	const style = {
 		maxHeight: `${2 * rows}rem`,
@@ -18,7 +18,7 @@ const Board = ({ rows, cols }) => {
 		paddingTop: '4rem'
 	};
 
-	let createBoard = () => {
+	const renderBoard = () => {
 		let grid = Array.from(Array(rows), () => new Array(cols));
 
 		for (let i = 0; i < grid.length; i++) {
@@ -29,12 +29,12 @@ const Board = ({ rows, cols }) => {
 		return grid;
 	};
 
-	return (
-		<div style={style}>
-			{createBoard()}
-			<div>{upArrow && 'hello'}</div>
-		</div>
-	);
+	if (arrowUp) {
+		console.log(position.x);
+		setPosition({ ...position, x: 1, y: 1 });
+	}
+
+	return <div style={style}>{renderBoard()}</div>;
 };
 
 export default Board;
