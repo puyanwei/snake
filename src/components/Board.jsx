@@ -7,17 +7,32 @@ const Board = ({ rows, cols }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
+        const onKeyPress = (e) => {
+            switch (e.keyCode) {
+                case 40:
+                    console.log("Its down");
+                    setPosition({ ...position, x: position.x + 1 })
+                    break;
+                case 38:
+                    console.log("Its up");
+                    setPosition({ ...position, x: position.x - 1 })
+                    break;
+                case 37:
+                    console.log("Its left");
+                    setPosition({ ...position, y: position.y - 1 })
+                    break;
+                case 39:
+                    console.log("Its right");
+                    setPosition({ ...position, y: position.y + 1 })
+                    break;
 
-        const goDown = (e) => {
-            if (e.keyCode === 40) {
-                console.log("Its down");
-                setPosition({ ...position, x: position.x + 1 })
+                default:
+                    throw new Error();
             }
         }
-        document.addEventListener("keydown", goDown);
-        return () => {
-            document.removeEventListener("keydown", goDown)
-        }
+        window.addEventListener("keydown", onKeyPress);
+        return () => window.removeEventListener("keydown", onKeyPress)
+
     }, [position])
 
     const style = {
@@ -38,7 +53,6 @@ const Board = ({ rows, cols }) => {
         }
         return grid;
     };
-
 
     return <div style={style}>{renderBoard()}</div>;
 };
