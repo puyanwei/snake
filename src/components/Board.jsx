@@ -30,22 +30,22 @@ const Board = ({ rows, cols }) => {
             switch (direction) {
                 case "up":
                     if (position.x - 1 >= 0) {
-                        setPosition({ ...position, x: position.x - 1 });
+                        setPosition(cb => { return { ...position, x: position.x - 1 } });
                     }
                     break;
                 case "down":
                     if (position.x + 1 < rows) {
-                        setPosition({ ...position, x: position.x + 1 });
+                        setPosition(cb => { return { ...position, x: position.x + 1 } });
                     }
                     break;
                 case "left":
                     if (position.y - 1 >= 0) {
-                        setPosition({ ...position, y: position.y - 1 });
+                        setPosition(cb => { return { ...position, y: position.y - 1 } });
                     }
                     break;
                 case "right":
                     if (position.y + 1 < cols) {
-                        setPosition({ ...position, y: position.y + 1 });
+                        setPosition(cb => { return { ...position, y: position.y + 1 } });
                     }
                     break;
 
@@ -54,7 +54,7 @@ const Board = ({ rows, cols }) => {
             }
         }, 1000);
         return () => clearInterval(interval);
-    }, [direction]);
+    });
 
     const style = {
         maxHeight: `${2 * rows}rem`,
