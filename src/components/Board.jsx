@@ -5,6 +5,9 @@ import Tile from "./Tile.jsx";
 const Board = ({ rows, cols }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [direction, setDirection] = useState(null);
+    const [foodPosition, setFoodPosition] = useState({ x: 5, y: 5 })
+
+    const { x, y } = position
 
     useEffect(() => {
         const onKeyPress = (e) => {
@@ -29,23 +32,23 @@ const Board = ({ rows, cols }) => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    if (position.x - 1 >= 0) {
-                        setPosition(cb => { return { ...position, x: position.x - 1 } });
+                    if (x - 1 >= 0) {
+                        setPosition(cb => { return { ...position, x: x - 1 } });
                     }
                     break;
                 case "down":
-                    if (position.x + 1 < rows) {
-                        setPosition(cb => { return { ...position, x: position.x + 1 } });
+                    if (x + 1 < rows) {
+                        setPosition(cb => { return { ...position, x: x + 1 } });
                     }
                     break;
                 case "left":
-                    if (position.y - 1 >= 0) {
-                        setPosition(cb => { return { ...position, y: position.y - 1 } });
+                    if (y - 1 >= 0) {
+                        setPosition(cb => { return { ...position, y: y - 1 } });
                     }
                     break;
                 case "right":
-                    if (position.y + 1 < cols) {
-                        setPosition(cb => { return { ...position, y: position.y + 1 } });
+                    if (y + 1 < cols) {
+                        setPosition(cb => { return { ...position, y: y + 1 } });
                     }
                     break;
 
@@ -70,7 +73,8 @@ const Board = ({ rows, cols }) => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={position.x === i && position.y === j}
+                        isActive={x === i && y === j}
+                        isFood={foodPosition.x === i && foodPosition.y === j}
                         key={`${[i, j]}`}
                     />
                 );
