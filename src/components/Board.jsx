@@ -26,23 +26,24 @@ const Board = ({ rows, cols }) => {
     })
 
     useEffect(() => {
+        console.log('direction', direction)
         const onKeyPress = (e) => {
             switch (e.keyCode) {
                 case 38:
-                    return setDirection("up");
+                    return direction === "down" || setDirection("up");
                 case 40:
-                    return setDirection("down");
+                    return direction === "up" || setDirection("down");
                 case 37:
-                    return setDirection("left");
+                    return direction === "right" || setDirection("left");
                 case 39:
-                    return setDirection("right");
+                    return direction === "left" || setDirection("right");
                 default:
                     break;
             }
         };
         window.addEventListener("keydown", onKeyPress);
         return () => window.removeEventListener("keydown", onKeyPress);
-    }, []);
+    }, [direction]);
 
     useEffect(() => {
         const interval = setInterval(() => {
