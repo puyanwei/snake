@@ -6,23 +6,25 @@ const Board = ({ rows, cols }) => {
     const [position, setPosition] = useState({ row: 0, col: 0 });
     const [direction, setDirection] = useState(null);
     const [foodPosition, setFoodPosition] = useState({ row: null, col: null })
+    const [gameOver, setGameOver] = useState(false)
 
     const { row, col } = position
 
     const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumber)
+    const isCollision = () => position.row === foodPosition.row && position.col === foodPosition.col
 
     useEffect(() => {
         setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
-        // TODO: Check that random position is not the same as snake starting position
+        // TODO: Check that random position is not the same as snake starting position. Might just be better to do this check with the context/reducer refactor later on.
     }, [cols, rows])
 
     useEffect(() => {
-        const snakeFoodCollisionChecker = () => {
-            if (position.row === foodPosition.row && position.col === foodPosition.col) {
+        const collisionChecker = () => {
+            if (isCollision()) {
                 setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
             }
         }
-        snakeFoodCollisionChecker()
+        collisionChecker()
     })
 
     useEffect(() => {
@@ -49,26 +51,21 @@ const Board = ({ rows, cols }) => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    if (row - 1 >= 0) {
-                        setPosition(() => { return { ...position, row: row - 1 } });
-                    }
-                    break;
+                    return (row - 1 >= 0) ?
+                        setPosition(() => { return { ...position, row: row - 1 } }) :
+                        setGameOver(true);
                 case "down":
-                    if (row + 1 < rows) {
-                        setPosition(() => { return { ...position, row: row + 1 } });
-                    }
-                    break;
+                    return (row + 1 < rows) ?
+                        setPosition(() => { return { ...position, row: row + 1 } }) :
+                        setGameOver(true);
                 case "left":
-                    if (col - 1 >= 0) {
-                        setPosition(() => { return { ...position, col: col - 1 } });
-                    }
-                    break;
+                    return (col - 1 >= 0) ?
+                        setPosition(() => { return { ...position, col: col - 1 } }) :
+                        setGameOver(true);
                 case "right":
-                    if (col + 1 < cols) {
-                        setPosition(() => { return { ...position, col: col + 1 } });
-                    }
-                    break;
-
+                    return (col + 1 < cols) ?
+                        setPosition(() => { return { ...position, col: col + 1 } }) :
+                        setGameOver(true);
                 default:
                     break;
             }
@@ -100,7 +97,11 @@ const Board = ({ rows, cols }) => {
         return grid;
     };
 
-    return <div style={style}>{renderBoard()}</div>;
+    return (
+        gameOver ?
+            <div>GAME OVER</div> :
+            <div style={style}>{renderBoard()}</div>
+    )
 };
 
 export default Board;
