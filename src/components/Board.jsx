@@ -5,9 +5,16 @@ import Tile from "./Tile.jsx";
 const Board = ({ rows, cols }) => {
     const [position, setPosition] = useState({ row: 0, col: 0 });
     const [direction, setDirection] = useState(null);
-    const [foodPosition, setFoodPosition] = useState({ row: 5, col: 10 })
+    const [foodPosition, setFoodPosition] = useState({ row: null, col: null })
 
     const { row, col } = position
+
+    const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumber)
+
+    useEffect(() => {
+        setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
+        // TODO: Check that random position is not the same as snake starting position
+    }, [])
 
     useEffect(() => {
         const onKeyPress = (e) => {
@@ -58,9 +65,6 @@ const Board = ({ rows, cols }) => {
         }, 1000);
         return () => clearInterval(interval);
     });
-
-    const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumber)
-
 
     const style = {
         maxHeight: `${2 * rows}rem`,
