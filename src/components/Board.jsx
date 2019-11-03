@@ -3,15 +3,13 @@ import React, { useState, useEffect } from "react";
 import Tile from "./Tile.jsx";
 
 const Board = ({ rows, cols }) => {
-    const [position, setPosition] = useState({ row: 0, col: 0 });
+    const [snakePositions, setSnakePositions] = useState([{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 0, col: 2 }]);
     const [direction, setDirection] = useState(null);
     const [foodPosition, setFoodPosition] = useState({ row: null, col: null })
     const [gameOver, setGameOver] = useState(false)
 
-    const { row, col } = position
-
     const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumber)
-    const isCollision = () => position.row === foodPosition.row && position.col === foodPosition.col
+    const isCollision = () => snakePositions.row === foodPosition.row && snakePositions.col === foodPosition.col
 
     useEffect(() => {
         setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
@@ -28,16 +26,15 @@ const Board = ({ rows, cols }) => {
     })
 
     useEffect(() => {
-        console.log('direction', direction)
         const onKeyPress = (e) => {
             switch (e.keyCode) {
-                case 38:
+                case 38: //Up
                     return direction === "down" || setDirection("up");
-                case 40:
+                case 40: // Down
                     return direction === "up" || setDirection("down");
-                case 37:
+                case 37: //Left
                     return direction === "right" || setDirection("left");
-                case 39:
+                case 39: // Right
                     return direction === "left" || setDirection("right");
                 default:
                     break;
@@ -51,20 +48,20 @@ const Board = ({ rows, cols }) => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    return (row - 1 >= 0) ?
-                        setPosition(() => { return { ...position, row: row - 1 } }) :
+                    return (snakePositions.row - 1 >= 0) ?
+                        setSnakePositions(() => { return { ...snakePositions, row: snakePositions.row - 1 } }) :
                         setGameOver(true);
                 case "down":
-                    return (row + 1 < rows) ?
-                        setPosition(() => { return { ...position, row: row + 1 } }) :
+                    return (snakePositions.row + 1 < rows) ?
+                        setSnakePositions(() => { return { ...snakePositions, row: snakePositions.row + 1 } }) :
                         setGameOver(true);
                 case "left":
-                    return (col - 1 >= 0) ?
-                        setPosition(() => { return { ...position, col: col - 1 } }) :
+                    return (snakePositions.col - 1 >= 0) ?
+                        setSnakePositions(() => { return { ...snakePositions, col: snakePositions.col - 1 } }) :
                         setGameOver(true);
                 case "right":
-                    return (col + 1 < cols) ?
-                        setPosition(() => { return { ...position, col: col + 1 } }) :
+                    return (snakePositions.col + 1 < cols) ?
+                        setSnakePositions(() => { return { ...snakePositions, col: snakePositions.col + 1 } }) :
                         setGameOver(true);
                 default:
                     break;
@@ -80,6 +77,15 @@ const Board = ({ rows, cols }) => {
         paddingTop: "4rem"
     };
 
+    const checkEachSnakePosition = (i, j) => {
+        let result =
+            snakePositions.some(snakePosition => {
+                return snakePosition.row === i && snakePosition.col === j
+            })
+        console.log(1, result)
+        return result;
+    }
+
     const renderBoard = () => {
         let grid = Array.from(Array(rows), () => new Array(cols));
 
@@ -87,7 +93,7 @@ const Board = ({ rows, cols }) => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={row === i && col === j}
+                        isActive={checkEachSnakePosition(i, j)}
                         isFood={foodPosition.row === i && foodPosition.col === j}
                         key={`${[i, j]}`}
                     />
