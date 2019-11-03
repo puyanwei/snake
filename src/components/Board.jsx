@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Tile from "./Tile.jsx";
 
 const Board = ({ rows, cols }) => {
-    const [snakePositions, setSnakePositions] = useState([{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 0, col: 2 }]);
+    const [snakePositions, setSnakePositions] = useState([{ row: 0, col: 0 }]);
     const [direction, setDirection] = useState(null);
     const [foodPosition, setFoodPosition] = useState({ row: null, col: null })
     const [gameOver, setGameOver] = useState(false)
@@ -20,6 +20,7 @@ const Board = ({ rows, cols }) => {
         const collisionChecker = () => {
             if (isCollision()) {
                 setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
+                setSnakePositions([...snakePositions, snakePositions[0]])
             }
         }
         collisionChecker()
@@ -48,21 +49,33 @@ const Board = ({ rows, cols }) => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    return (snakePositions.row - 1 >= 0) ?
-                        setSnakePositions(() => { return { ...snakePositions, row: snakePositions.row - 1 } }) :
-                        setGameOver(true);
+                    if (snakePositions[0].row - 1 >= 0) {
+                        setSnakePositions(() => snakePositions.map((snakePosition, i) => {
+                            return { ...snakePositions[i], row: snakePosition.row - 1 }
+                        }))
+                    }
+                    break;
                 case "down":
-                    return (snakePositions.row + 1 < rows) ?
-                        setSnakePositions(() => { return { ...snakePositions, row: snakePositions.row + 1 } }) :
-                        setGameOver(true);
+                    if (snakePositions[0].row + 1 < rows) {
+                        setSnakePositions(() => snakePositions.map((snakePosition, i) => {
+                            return { ...snakePositions[i], row: snakePosition.row + 1 }
+                        }))
+                    }
+                    break
                 case "left":
-                    return (snakePositions.col - 1 >= 0) ?
-                        setSnakePositions(() => { return { ...snakePositions, col: snakePositions.col - 1 } }) :
-                        setGameOver(true);
+                    if (snakePositions[0].col - 1 >= 0) {
+                        setSnakePositions(() => snakePositions.map((snakePosition, i) => {
+                            return { ...snakePositions[i], col: snakePosition.col - 1 }
+                        }))
+                    }
+                    break
                 case "right":
-                    return (snakePositions.col + 1 < cols) ?
-                        setSnakePositions(() => { return { ...snakePositions, col: snakePositions.col + 1 } }) :
-                        setGameOver(true);
+                    if (snakePositions[0].col + 1 < cols) {
+                        setSnakePositions(() => snakePositions.map((snakePosition, i) => {
+                            return { ...snakePositions[i], col: snakePosition.col + 1 }
+                        }))
+                    }
+                    break
                 default:
                     break;
             }
@@ -77,12 +90,11 @@ const Board = ({ rows, cols }) => {
         paddingTop: "4rem"
     };
 
-    const checkEachSnakePosition = (i, j) => {
+    const checkEachSnakeTilePosition = (i, j) => {
         let result =
             snakePositions.some(snakePosition => {
                 return snakePosition.row === i && snakePosition.col === j
             })
-        console.log(1, result)
         return result;
     }
 
@@ -93,7 +105,7 @@ const Board = ({ rows, cols }) => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={checkEachSnakePosition(i, j)}
+                        isActive={checkEachSnakeTilePosition(i, j)}
                         isFood={foodPosition.row === i && foodPosition.col === j}
                         key={`${[i, j]}`}
                     />
