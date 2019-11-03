@@ -14,7 +14,16 @@ const Board = ({ rows, cols }) => {
     useEffect(() => {
         setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
         // TODO: Check that random position is not the same as snake starting position
-    }, [])
+    }, [cols, rows])
+
+    useEffect(() => {
+        const snakeFoodCollisionChecker = () => {
+            if (position.row === foodPosition.row && position.col === foodPosition.col) {
+                setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
+            }
+        }
+        snakeFoodCollisionChecker()
+    })
 
     useEffect(() => {
         const onKeyPress = (e) => {
@@ -40,29 +49,29 @@ const Board = ({ rows, cols }) => {
             switch (direction) {
                 case "up":
                     if (row - 1 >= 0) {
-                        setPosition(cb => { return { ...position, row: row - 1 } });
+                        setPosition(() => { return { ...position, row: row - 1 } });
                     }
                     break;
                 case "down":
                     if (row + 1 < rows) {
-                        setPosition(cb => { return { ...position, row: row + 1 } });
+                        setPosition(() => { return { ...position, row: row + 1 } });
                     }
                     break;
                 case "left":
                     if (col - 1 >= 0) {
-                        setPosition(cb => { return { ...position, col: col - 1 } });
+                        setPosition(() => { return { ...position, col: col - 1 } });
                     }
                     break;
                 case "right":
                     if (col + 1 < cols) {
-                        setPosition(cb => { return { ...position, col: col + 1 } });
+                        setPosition(() => { return { ...position, col: col + 1 } });
                     }
                     break;
 
                 default:
                     break;
             }
-        }, 1000);
+        }, 500);
         return () => clearInterval(interval);
     });
 
