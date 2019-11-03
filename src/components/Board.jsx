@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import Tile from "./Tile.jsx";
 
 const Board = ({ rows, cols }) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [position, setPosition] = useState({ row: 0, col: 0 });
     const [direction, setDirection] = useState(null);
-    const [foodPosition, setFoodPosition] = useState({ x: 5, y: 5 })
+    const [foodPosition, setFoodPosition] = useState({ row: 5, col: 10 })
 
-    const { x, y } = position
+    const { row, col } = position
 
     useEffect(() => {
         const onKeyPress = (e) => {
@@ -32,23 +32,23 @@ const Board = ({ rows, cols }) => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    if (x - 1 >= 0) {
-                        setPosition(cb => { return { ...position, x: x - 1 } });
+                    if (row - 1 >= 0) {
+                        setPosition(cb => { return { ...position, row: row - 1 } });
                     }
                     break;
                 case "down":
-                    if (x + 1 < rows) {
-                        setPosition(cb => { return { ...position, x: x + 1 } });
+                    if (row + 1 < rows) {
+                        setPosition(cb => { return { ...position, row: row + 1 } });
                     }
                     break;
                 case "left":
-                    if (y - 1 >= 0) {
-                        setPosition(cb => { return { ...position, y: y - 1 } });
+                    if (col - 1 >= 0) {
+                        setPosition(cb => { return { ...position, col: col - 1 } });
                     }
                     break;
                 case "right":
-                    if (y + 1 < cols) {
-                        setPosition(cb => { return { ...position, y: y + 1 } });
+                    if (col + 1 < cols) {
+                        setPosition(cb => { return { ...position, col: col + 1 } });
                     }
                     break;
 
@@ -58,6 +58,9 @@ const Board = ({ rows, cols }) => {
         }, 1000);
         return () => clearInterval(interval);
     });
+
+    const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumber)
+
 
     const style = {
         maxHeight: `${2 * rows}rem`,
@@ -73,8 +76,8 @@ const Board = ({ rows, cols }) => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={x === i && y === j}
-                        isFood={foodPosition.x === i && foodPosition.y === j}
+                        isActive={row === i && col === j}
+                        isFood={foodPosition.row === i && foodPosition.col === j}
                         key={`${[i, j]}`}
                     />
                 );
