@@ -53,7 +53,8 @@ const Board = () => {
                 case "down":
                     // if (snakePositions[0].row + 1 < rows) {
                     // setPrevPosition(snakePositions[snakePositions.length - 1])
-                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
+                    dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
+                    break;
                 case "left":
                     // if (snakePositions[0].col - 1 >= 0) {
                     // setPrevPosition(snakePositions[snakePositions.length - 1])
@@ -76,13 +77,12 @@ const Board = () => {
         paddingTop: "4rem"
     };
 
-    const checkEachSnakeTilePosition = (i, j) => {
-        console.log('snake', snake)
-        snake.some(snakeTile =>
+    const isActiveMatching = (i, j) => {
+        console.log(snake)
+        return snake.some(snakeTile =>
             snakeTile.y === i && snakeTile.x === j
         )
     }
-
 
     const renderBoard = () => {
         let grid = Array.from(Array(rows), () => new Array(cols));
@@ -91,7 +91,7 @@ const Board = () => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={checkEachSnakeTilePosition(i, j)}
+                        isActive={isActiveMatching(i, j)}
                         isFood={food.y === i && food.x === j}
                         key={`${[i, j]}`}
                     />
