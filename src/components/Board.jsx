@@ -6,24 +6,12 @@ import { snakeContext } from '../contexts/snakeContext'
 const Board = () => {
     const {
         state: {
-            snake, prev, food, direction, gameOver
+            snake, food, direction, gameOver
         },
         dispatch,
         rows,
         cols
     } = useContext(snakeContext)
-
-    // const isCollision = () => snakePositions[0].row === foodPosition.row && snakePositions[0].col === foodPosition.col
-
-    // useEffect(() => {
-    //     const collisionChecker = () => {
-    //         if (isCollision()) {
-    //             setFoodPosition({ row: randomPosition(rows), col: randomPosition(cols) })
-    //             setSnakePositions([...snakePositions, prevPosition])
-    //         }
-    //     }
-    //     collisionChecker()
-    // })
 
     useEffect(() => {
         const onKeyPress = (e) => {
@@ -47,28 +35,19 @@ const Board = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log({ direction })
-            console.log(snake[0], snake[0].y, snake[0].x)
             switch (direction) {
                 case "up":
-                    // if (snakePositions[0].row - 1 >= 0) {
-                    // setPrevPosition(snakePositions[snakePositions.length - 1]);
                     dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
                     break
 
                 case "down":
-                    // if (snakePositions[0].row + 1 < rows) {
-                    // setPrevPosition(snakePositions[snakePositions.length - 1])
                     dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
                     break;
                 case "left":
-                    // if (snakePositions[0].col - 1 >= 0) {
-                    // setPrevPosition(snakePositions[snakePositions.length - 1])
-                    dispatch({ type: 'SNAKE', payload: { ...snake, x: snake[0].x - 1 } })
+                    dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x - 1 } })
                     break;
                 case "right":
-                    // if (snakePositions[0].col + 1 < cols) {
-                    // setPrevPosition(snakePositions[snakePositions.length - 1])
+
                     dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
                     break;
                 default:
@@ -86,7 +65,6 @@ const Board = () => {
     };
 
     const isActiveMatchingState = (i, j) => {
-        console.log('matcher', snake)
         return snake.some(snakeTile =>
             snakeTile.y === i && snakeTile.x === j
         )
