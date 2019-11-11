@@ -2,8 +2,9 @@ export const snakeReducer = (state, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        // case 'SNAKE':
-        // 	return { ...state, x: payload.x, y: payload.y };
+        case 'SNAKE':
+            console.log([...state.snake, { ...state.snake[0], x: payload.x, y: payload.y }])
+            return [...state.snake, { ...state.snake[0], x: payload.x, y: payload.y }];
         // case 'PREV':
         // 	return { ...state, boardState: payload };
         // case 'FOOD':

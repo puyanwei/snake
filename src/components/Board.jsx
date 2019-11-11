@@ -4,7 +4,11 @@ import Tile from "./Tile.jsx";
 import { snakeContext } from '../contexts/snakeContext'
 
 const Board = () => {
-    const { rows, cols, state: { snake, prev, food, direction, gameOver }, dispatch } = useContext(snakeContext)
+    const {
+        state: { snake, prev, food, direction, gameOver }, dispatch,
+        rows,
+        cols
+    } = useContext(snakeContext)
 
     // const isCollision = () => snakePositions[0].row === foodPosition.row && snakePositions[0].col === foodPosition.col
 
@@ -38,39 +42,32 @@ const Board = () => {
         return () => window.removeEventListener("keydown", onKeyPress);
     }, [direction]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         switch (direction) {
-    //             case "up":
-    //                 if (snakePositions[0].row - 1 >= 0) {
-    //                     setPrevPosition(snakePositions[snakePositions.length - 1]);
-    //                     setSnakePositions(() => { return [...snakePositions, { row: snakePositions[0].row - 1 }] })
-    //                 }
-    //                 break;
-    //             case "down":
-    //                 if (snakePositions[0].row + 1 < rows) {
-    //                     setPrevPosition(snakePositions[snakePositions.length - 1])
-    //                     setSnakePositions(() => { return [...snakePositions, { row: snakePositions[0].row + 1 }] })
-    //                 }
-    //                 break;
-    //             case "left":
-    //                 if (snakePositions[0].col - 1 >= 0) {
-    //                     setPrevPosition(snakePositions[snakePositions.length - 1])
-    //                     setSnakePositions(() => { return [...snakePositions, { col: snakePositions[0].col - 1 }] })
-    //                 }
-    //                 break;
-    //             case "right":
-    //                 if (snakePositions[0].col + 1 < cols) {
-    //                     setPrevPosition(snakePositions[snakePositions.length - 1])
-    //                     setSnakePositions(() => { return [...snakePositions, { col: snakePositions[0].col + 1 }] })
-    //                 }
-    //                 break
-    //             default:
-    //                 break;
-    //         }
-    //     }, 500);
-    //     return () => clearInterval(interval);
-    // });
+    useEffect(() => {
+        const interval = setInterval(() => {
+            switch (direction) {
+                case "up":
+                    // if (snakePositions[0].row - 1 >= 0) {
+                    // setPrevPosition(snakePositions[snakePositions.length - 1]);
+                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
+
+                case "down":
+                    // if (snakePositions[0].row + 1 < rows) {
+                    // setPrevPosition(snakePositions[snakePositions.length - 1])
+                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
+                case "left":
+                    // if (snakePositions[0].col - 1 >= 0) {
+                    // setPrevPosition(snakePositions[snakePositions.length - 1])
+                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x - 1 } })
+                case "right":
+                    // if (snakePositions[0].col + 1 < cols) {
+                    // setPrevPosition(snakePositions[snakePositions.length - 1])
+                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
+                default:
+                    break;
+            }
+        }, 500);
+        return () => clearInterval(interval);
+    });
 
     const style = {
         maxHeight: `${2 * rows}rem`,
@@ -79,10 +76,12 @@ const Board = () => {
         paddingTop: "4rem"
     };
 
-    const checkEachSnakeTilePosition = (i, j) =>
+    const checkEachSnakeTilePosition = (i, j) => {
+        console.log('snake', snake)
         snake.some(snakeTile =>
             snakeTile.y === i && snakeTile.x === j
         )
+    }
 
 
     const renderBoard = () => {
