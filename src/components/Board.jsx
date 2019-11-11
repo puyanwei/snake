@@ -5,7 +5,10 @@ import { snakeContext } from '../contexts/snakeContext'
 
 const Board = () => {
     const {
-        state: { snake, prev, food, direction, gameOver }, dispatch,
+        state: {
+            snake, prev, food, direction, gameOver
+        },
+        dispatch,
         rows,
         cols
     } = useContext(snakeContext)
@@ -44,11 +47,14 @@ const Board = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            console.log({ direction })
+            console.log(snake[0], snake[0].y, snake[0].x)
             switch (direction) {
                 case "up":
                     // if (snakePositions[0].row - 1 >= 0) {
                     // setPrevPosition(snakePositions[snakePositions.length - 1]);
-                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
+                    dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
+                    break
 
                 case "down":
                     // if (snakePositions[0].row + 1 < rows) {
@@ -58,11 +64,13 @@ const Board = () => {
                 case "left":
                     // if (snakePositions[0].col - 1 >= 0) {
                     // setPrevPosition(snakePositions[snakePositions.length - 1])
-                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x - 1 } })
+                    dispatch({ type: 'SNAKE', payload: { ...snake, x: snake[0].x - 1 } })
+                    break;
                 case "right":
                     // if (snakePositions[0].col + 1 < cols) {
                     // setPrevPosition(snakePositions[snakePositions.length - 1])
-                    return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
+                    dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
+                    break;
                 default:
                     break;
             }
@@ -77,8 +85,8 @@ const Board = () => {
         paddingTop: "4rem"
     };
 
-    const isActiveMatching = (i, j) => {
-        console.log(snake)
+    const isActiveMatchingState = (i, j) => {
+        console.log('matcher', snake)
         return snake.some(snakeTile =>
             snakeTile.y === i && snakeTile.x === j
         )
@@ -91,7 +99,7 @@ const Board = () => {
             for (let j = 0; j < grid[i].length; j++) {
                 grid[i][j] = (
                     <Tile
-                        isActive={isActiveMatching(i, j)}
+                        isActive={isActiveMatchingState(i, j)}
                         isFood={food.y === i && food.x === j}
                         key={`${[i, j]}`}
                     />
