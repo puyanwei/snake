@@ -51,7 +51,7 @@ const Board = () => {
                     dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
                     break;
                 default:
-                    break;
+                    throw new Error();
             }
         }, 500);
         return () => clearInterval(interval);

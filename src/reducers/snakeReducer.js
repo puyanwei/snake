@@ -3,7 +3,10 @@ export const snakeReducer = (state, action) => {
 
     switch (type) {
         case 'SNAKE':
-            return [{ ...state.snake[0], x: payload.x, y: payload.y }]
+            return {
+                ...state,
+                snake: [{ x: payload.x, y: payload.y }]
+            };
         case 'FOOD':
             return { ...state, x: payload.x, y: payload.y };
         case 'DIRECTION':
@@ -11,6 +14,6 @@ export const snakeReducer = (state, action) => {
         case 'GAME_OVER':
             return { ...state, gameOver: payload };
         default:
-            throw new Error();
+            return state;
     }
 };

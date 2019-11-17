@@ -10,7 +10,6 @@ const randomPosition = (biggestNumber) => Math.floor(Math.random() * biggestNumb
 
 const initialState = {
     snake: [{ x: 0, y: 0 }],
-    prev: { x: null, y: null },
     food: { x: randomPosition(rows), y: randomPosition(cols) },
     direction: null,
     gameOver: false
