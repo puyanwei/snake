@@ -23,8 +23,7 @@ const Board = () => {
                 case 37: //Left
                     return direction === "right" || dispatch({ type: 'DIRECTION', payload: "left" });
                 case 39: // Right
-                    return direction === "left" ||
-                        dispatch({ type: 'DIRECTION', payload: "right" });
+                    return direction === "left" || dispatch({ type: 'DIRECTION', payload: "right" });
                 default:
                     break;
             }
@@ -37,21 +36,27 @@ const Board = () => {
         const interval = setInterval(() => {
             switch (direction) {
                 case "up":
-                    dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
+                    if ((snake[0].y - 1) >= 0) {
+                        return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y - 1 } })
+                    }
                     break
-
                 case "down":
-                    dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
-                    break;
+                    if ((snake[0].y + 1) < rows) {
+                        return dispatch({ type: 'SNAKE', payload: { ...snake[0], y: snake[0].y + 1 } })
+                    }
+                    break
                 case "left":
-                    dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x - 1 } })
-                    break;
+                    if ((snake[0].x - 1) >= 0) {
+                        return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x - 1 } })
+                    }
+                    break
                 case "right":
-
-                    dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
-                    break;
+                    if ((snake[0].x + 1) < cols) {
+                        return dispatch({ type: 'SNAKE', payload: { ...snake[0], x: snake[0].x + 1 } })
+                    }
+                    break
                 default:
-                    throw new Error();
+                    break;
             }
         }, 500);
         return () => clearInterval(interval);

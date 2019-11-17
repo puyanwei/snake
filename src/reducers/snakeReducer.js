@@ -14,6 +14,6 @@ export const snakeReducer = (state, action) => {
         case 'GAME_OVER':
             return { ...state, gameOver: payload };
         default:
-            return state;
+            throw new Error();
     }
 };
