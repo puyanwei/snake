@@ -14,6 +14,22 @@ const Board = () => {
 
     let snakeHead = snake[0];
 
+    const snakeFoodCollisionChecker = () => {
+        if (snakeHead.x === food.x && snakeHead.y === food.y) {
+            console.log("Collision!");
+            console.log("snakeHead", snakeHead);
+            console.log("food", food);
+
+            dispatch({
+                type: "FOOD",
+                payload: {
+                    x: randomPosition(cols),
+                    y: randomPosition(rows)
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         const onKeyPress = e => {
             switch (e.keyCode) {
@@ -47,6 +63,7 @@ const Board = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            snakeFoodCollisionChecker();
             switch (direction) {
                 case "up":
                     if (snakeHead.y - 1 >= 0) {
@@ -85,23 +102,6 @@ const Board = () => {
             }
         }, 500);
         return () => clearInterval(interval);
-    });
-
-    useEffect(() => {
-        const snakeFoodCollisionChecker = () => {
-            if (snakeHead.x === food.x && snakeHead.y === food.y) {
-                console.log("Collision!");
-
-                dispatch({
-                    type: "FOOD",
-                    payload: {
-                        x: randomPosition(cols),
-                        y: randomPosition(rows)
-                    }
-                });
-            }
-        };
-        snakeFoodCollisionChecker();
     });
 
     const style = {

@@ -14,8 +14,12 @@ export const snakeReducer = (state, action) => {
                 }]
             };
         case 'FOOD':
+            console.log(payload)
             return {
-                ...state, x: payload.x, y: payload.y
+                ...state, food: {
+                    x: payload.x,
+                    y: payload.y
+                }
             };
         case 'DIRECTION':
             return {
