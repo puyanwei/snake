@@ -17,6 +17,10 @@ const initialState = {
             y: 0
         }
     ],
+    tail: {
+        x: null,
+        y: null
+    },
     food: {
         x: randomPosition(cols),
         y: randomPosition(rows)

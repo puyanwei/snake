@@ -5,7 +5,7 @@ import { snakeContext } from "../contexts/snakeContext.jsx";
 
 const Board = () => {
     const {
-        state: { snake, food, direction, gameOver },
+        state: { snake, tail, food, direction, gameOver },
         rows,
         cols,
         randomPosition,
@@ -15,11 +15,11 @@ const Board = () => {
     let snakeHead = snake[0];
 
     const snakeFoodCollisionChecker = () => {
-        if (snakeHead.x === food.x && snakeHead.y === food.y) {
-            console.log("Collision!");
-            console.log("snakeHead", snakeHead);
-            console.log("food", food);
+        snakeHead.x === 0 && snakeHead.y === 0
+            ? dispatch({ type: "TAIL", payload: { x: 0, y: 0 } })
+            : dispatch({ type: "TAIL", payload: { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y } })
 
+        if (snakeHead.x === food.x && snakeHead.y === food.y) {
             dispatch({
                 type: "FOOD",
                 payload: {
@@ -135,8 +135,8 @@ const Board = () => {
     return gameOver ? (
         <div>GAME OVER</div>
     ) : (
-        <div style={style}>{renderBoard()}</div>
-    );
+            <div style={style}>{renderBoard()}</div>
+        );
 };
 
 export default Board;
