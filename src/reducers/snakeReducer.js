@@ -8,28 +8,28 @@ export const snakeReducer = (state, action) => {
         case 'SNAKE_POSITION':
             return {
                 ...state,
-                snake: [{
-                    x: payload.x,
-                    y: payload.y
-                }]
-            };
-        case 'TAIL_POSITION':
-            return {
-                ...state, tail: {
-                    x: payload.x,
-                    y: payload.y
-                }
-            };
-        case 'FOOD_POSITION':
-            return {
-                ...state, food: {
-                    x: payload.x,
-                    y: payload.y
-                }
+                snake: [payload]
             };
         case 'SNAKE_DIRECTION':
             return {
                 ...state, direction: payload
+            };
+        case 'SNAKE_GROW':
+            let blah = {
+                ...state,
+                snake: [...state.snake,
+                    payload
+                ]
+            };
+            console.log(blah);
+            return blah;
+        case 'TAIL_POSITION':
+            return {
+                ...state, tail: payload
+            };
+        case 'FOOD_POSITION':
+            return {
+                ...state, food: payload
             };
         case 'GAME_OVER':
             return {
