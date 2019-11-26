@@ -5,7 +5,7 @@ export const snakeReducer = (state, action) => {
     } = action;
 
     switch (type) {
-        case 'SNAKE':
+        case 'SNAKE_POSITION':
             return {
                 ...state,
                 snake: [{
@@ -13,21 +13,21 @@ export const snakeReducer = (state, action) => {
                     y: payload.y
                 }]
             };
-        case 'TAIL':
+        case 'TAIL_POSITION':
             return {
                 ...state, tail: {
                     x: payload.x,
                     y: payload.y
                 }
             };
-        case 'FOOD':
+        case 'FOOD_POSITION':
             return {
                 ...state, food: {
                     x: payload.x,
                     y: payload.y
                 }
             };
-        case 'DIRECTION':
+        case 'SNAKE_DIRECTION':
             return {
                 ...state, direction: payload
             };

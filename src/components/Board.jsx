@@ -16,12 +16,12 @@ const Board = () => {
 
     const snakeFoodCollisionChecker = () => {
         snakeHead.x === 0 && snakeHead.y === 0
-            ? dispatch({ type: "TAIL", payload: { x: 0, y: 0 } })
-            : dispatch({ type: "TAIL", payload: { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y } })
+            ? dispatch({ type: "TAIL_POSITION", payload: { x: 0, y: 0 } })
+            : dispatch({ type: "TAIL_POSITION", payload: { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y } })
 
         if (snakeHead.x === food.x && snakeHead.y === food.y) {
             dispatch({
-                type: "FOOD",
+                type: "FOOD_POSITION",
                 payload: {
                     x: randomPosition(cols),
                     y: randomPosition(rows)
@@ -36,22 +36,22 @@ const Board = () => {
                 case 38: //Up
                     return (
                         direction === "down" ||
-                        dispatch({ type: "DIRECTION", payload: "up" })
+                        dispatch({ type: "SNAKE_DIRECTION", payload: "up" })
                     );
                 case 40: // Down
                     return (
                         direction === "up" ||
-                        dispatch({ type: "DIRECTION", payload: "down" })
+                        dispatch({ type: "SNAKE_DIRECTION", payload: "down" })
                     );
                 case 37: //Left
                     return (
                         direction === "right" ||
-                        dispatch({ type: "DIRECTION", payload: "left" })
+                        dispatch({ type: "SNAKE_DIRECTION", payload: "left" })
                     );
                 case 39: // Right
                     return (
                         direction === "left" ||
-                        dispatch({ type: "DIRECTION", payload: "right" })
+                        dispatch({ type: "SNAKE_DIRECTION", payload: "right" })
                     );
                 default:
                     break;
@@ -68,7 +68,7 @@ const Board = () => {
                 case "up":
                     if (snakeHead.y - 1 >= 0) {
                         return dispatch({
-                            type: "SNAKE",
+                            type: "SNAKE_POSITION",
                             payload: { ...snakeHead, y: snakeHead.y - 1 }
                         });
                     }
@@ -76,7 +76,7 @@ const Board = () => {
                 case "down":
                     if (snakeHead.y + 1 < rows) {
                         return dispatch({
-                            type: "SNAKE",
+                            type: "SNAKE_POSITION",
                             payload: { ...snakeHead, y: snakeHead.y + 1 }
                         });
                     }
@@ -84,7 +84,7 @@ const Board = () => {
                 case "left":
                     if (snakeHead.x - 1 >= 0) {
                         return dispatch({
-                            type: "SNAKE",
+                            type: "SNAKE_POSITION",
                             payload: { ...snakeHead, x: snakeHead.x - 1 }
                         });
                     }
@@ -92,7 +92,7 @@ const Board = () => {
                 case "right":
                     if (snakeHead.x + 1 < cols) {
                         return dispatch({
-                            type: "SNAKE",
+                            type: "SNAKE_POSITION",
                             payload: { ...snakeHead, x: snakeHead.x + 1 }
                         });
                     }
