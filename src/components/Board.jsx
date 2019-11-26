@@ -15,9 +15,9 @@ const Board = () => {
     let snakeHead = snake[0];
 
     const snakeFoodCollisionChecker = () => {
-        snakeHead.x === 0 && snakeHead.y === 0
-            ? dispatch({ type: "TAIL_POSITION", payload: { x: 0, y: 0 } })
-            : dispatch({ type: "TAIL_POSITION", payload: { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y } })
+        // snakeHead.x === 0 && snakeHead.y === 0
+        //     ? dispatch({ type: "TAIL_POSITION", payload: { x: 0, y: 0 } })
+        //     : dispatch({ type: "TAIL_POSITION", payload: { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y } })
 
         if (snakeHead.x === food.x && snakeHead.y === food.y) {
             dispatch({
@@ -66,7 +66,7 @@ const Board = () => {
             snakeFoodCollisionChecker();
             switch (direction) {
                 case "up":
-                    if (snakeHead.y - 1 >= 0) {
+                    if (snake.some(body => body.y - 1 >= 0)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
                             payload: { ...snakeHead, y: snakeHead.y - 1 }
@@ -74,15 +74,15 @@ const Board = () => {
                     }
                     break;
                 case "down":
-                    if (snakeHead.y + 1 < rows) {
+                    if (snake.some(body => body.y + 1 < rows)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
-                            payload: { ...snakeHead, y: snakeHead.y + 1 }
+                            payload: snake.map(body => { return { ...body, y: body.y + 1 } })
                         });
                     }
                     break;
                 case "left":
-                    if (snakeHead.x - 1 >= 0) {
+                    if (snake.some(body => body.x - 1 >= 0)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
                             payload: { ...snakeHead, x: snakeHead.x - 1 }
@@ -90,7 +90,7 @@ const Board = () => {
                     }
                     break;
                 case "right":
-                    if (snakeHead.x + 1 < cols) {
+                    if (snake.some(body => body.x + 1 < cols)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
                             payload: { ...snakeHead, x: snakeHead.x + 1 }
