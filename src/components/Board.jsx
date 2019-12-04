@@ -69,7 +69,7 @@ const Board = () => {
                     if (snake.some(body => body.y - 1 >= 0)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
-                            payload: { ...snakeHead, y: snakeHead.y - 1 }
+                            payload: snake.map(body => { return { ...body, y: body.y - 1 } })
                         });
                     }
                     break;
@@ -85,7 +85,7 @@ const Board = () => {
                     if (snake.some(body => body.x - 1 >= 0)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
-                            payload: { ...snakeHead, x: snakeHead.x - 1 }
+                            payload: snake.map(body => { return { ...body, x: body.x - 1 } })
                         });
                     }
                     break;
@@ -93,7 +93,7 @@ const Board = () => {
                     if (snake.some(body => body.x + 1 < cols)) {
                         return dispatch({
                             type: "SNAKE_POSITION",
-                            payload: { ...snakeHead, x: snakeHead.x + 1 }
+                            payload: snake.map(body => { return { ...body, x: body.x + 1 } })
                         });
                     }
                     break;
